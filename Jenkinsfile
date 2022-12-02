@@ -1,20 +1,17 @@
-pipeline {
+pipeline{
     agent any
-
-    stages {
-        stage('compile') {
-            steps {
-                sh "mvn compile"
+    environment{
+        PATH = "/opt/maven3.8/bin:$PATH"
+    }
+    stages{
+        stage("Git Checkout"){
+            steps{
+             git credentialsId: 'gitaccess', url: 'https://github.com/ravi1435/myweb.git'
             }
         }
-        stage('Test') {
-            steps {
-                sh "mvn test"
-            }
-        }
-        stage('package') {
-            steps {
-                sh "mvn package"
+        stage("Maven Build"){
+            steps{
+                sh "mvn clean package"
             }
         }
     }
